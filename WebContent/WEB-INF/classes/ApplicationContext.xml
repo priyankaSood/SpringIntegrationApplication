@@ -1,0 +1,21 @@
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns="http://www.springframework.org/schema/integration"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans spring-beans-3.2.xsd
+                                 http://www.springframework.org/schema/context spring-context-3.2.xsd
+                                 http://www.springframework.org/schema/integration spring-integration.xsd">
+
+	<!-- Component scan to find all Spring components -->
+    <context:component-scan base-package="com.ibm.bluemix.samples;" />
+
+ 	<!-- A Spring Integration channel -->
+    <channel id="inboundChannel" />
+
+    <!-- A Spring Integration adapter that routes messages sent to the inboundChannel to the bean named "InboundServiceImpl"'s getMessage() method -->
+    <service-activator input-channel="inboundChannel" ref="inboundServiceImpl" method="getMessage" />
+    
+     <!-- Define a gateway that we can use to capture a return value -->
+    <gateway id="inboundGateway" service-interface="com.ibm.bluemix.samples.InboundService" default-request-channel="inboundChannel" />	
+	
+</beans:beans>
